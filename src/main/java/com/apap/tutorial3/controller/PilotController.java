@@ -46,42 +46,66 @@ public class PilotController {
 	
 	
 	
-	@RequestMapping(value= {"/pilot/view/lisence-number", "/pilot/view/lisence-number/{lisenceNumber}"})
-	public String viewLisenceNumber(@PathVariable Optional <String> lisenceNumber, Model model) {
+	@RequestMapping(value= {"/pilot/view/license-number", "/pilot/view/license-number/{licenseNumber}"})
+	public String viewLicenseNumber(@PathVariable Optional <String> licenseNumber, Model model) {
 		
-		if(lisenceNumber.isPresent()) {
-			PilotModel archive= pilotService.getPilotDetailByLicenseNumber(lisenceNumber.get());
-			if (archive!=null) {
+		if(licenseNumber.isPresent()) {
+			PilotModel archive= pilotService.getPilotDetailByLicenseNumber(licenseNumber.get());
+		
+			if (archive!= null) {
 				model.addAttribute("pilot", archive);
-				return "view-by-lisence";
+				return "view-by-license";
+				
+				
 			}else {
-				return"lisence-not-exist";
+				return"license-not-exist";
 			}
 			
 		}else {
-			return"lisence-not-exist";
+			return"license-not-exist";
 		}
 		
 	}
 	
-	@RequestMapping(value = {"/pilot/update/lisence-number/{lisenceNumber}/flyhour/{flyHour}"})
-	public String updateFlyHour(@PathVariable Optional <String> lisenceNumber, @PathVariable Integer flyHour, Model model) {
+	@RequestMapping(value = {"/pilot/update/license-number/{licenseNumber}/fly-hour/{flyHour}"})
+	public String updateFlyHour(@PathVariable Optional <String> licenseNumber, @PathVariable Integer flyHour, Model model) {
 		
-		if(lisenceNumber.isPresent()) {
-			PilotModel archive= pilotService.getPilotDetailByLicenseNumber(lisenceNumber.get());
+			if(licenseNumber.isPresent()) {
+			PilotModel archive= pilotService.getPilotDetailByLicenseNumber(licenseNumber.get());
 			if (archive!=null) {
+				archive.setFlyHour(flyHour);
 				
 				model.addAttribute("pilot", archive);
+			
 				return "update-flyhour";
-				
 			}else {
 				return"id-not-exist";
 			}
 			
-		}else {
-			return"id-not-exist";
-		}
+			}else {
+				return"id-not-exist";
+			}
+			
 	}
+	@RequestMapping("/pilot/delete/id/{id}")
+	public String deletePilot(@PathVariable Optional <String> id, Model model) {
+		
+		if(id.isPresent()) {
+			PilotModel archive= pilotService.getPilotDetailById(id.get());
+			pilotService.deletePilot(archive);
+			List<PilotModel> kumuplanpilot = pilotService.getPilotList();
+			model.addAttribute("pilotList", kumuplanpilot);
+			
+			return "delete-pilot";
+		}
+		else {
+			return "error-delete";
+		}
+}
+	
+	
+	
+	
 	
 	
 	
