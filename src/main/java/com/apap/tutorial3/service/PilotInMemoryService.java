@@ -26,24 +26,16 @@ public class PilotInMemoryService implements PilotService{
 		return archivePilot;
 	}
 
-	@Override
-	public PilotModel getPilotDetailByLicenseNumber(String licenseNumber) {
-		for (PilotModel that_pilot : archivePilot) {
-			if(that_pilot.getLicenseNumber()==licenseNumber);
-				return that_pilot;
-			
-		}
-		return null;
-		
 	
 			
-	}
+	
 
 	@Override
 	public PilotModel getPilotDetailById(String id) {
 		for (PilotModel that_pilot : archivePilot) {
-				if(that_pilot.getId()==id);
+				if(that_pilot.getId().equals(id));
 				return that_pilot;
+				
 		}
 		
 		return null;
@@ -53,6 +45,16 @@ public class PilotInMemoryService implements PilotService{
 	public void deletePilot(PilotModel pilot) {
 		archivePilot.remove(pilot);
 		}
+
+	@Override
+	public PilotModel getPilotDetailByLicenseNumber(String licenseNumber) {
+		for (PilotModel pilot : archivePilot) {
+			if( pilot.getLicenseNumber().equals(licenseNumber));
+			return pilot;		
+		}
+	
+	return null;
+	}
 	
 	
 
